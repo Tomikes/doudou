@@ -17,7 +17,7 @@ from . import sessions
 
 DEFAULT_BLUEPRINTS = (
     (apps.app, ""),
-    (admin.admin, "/doudou/admin"),
+    (admin.admin, "/admin"),
     (kindeditor.kindedit, '/attached')
 )
 
