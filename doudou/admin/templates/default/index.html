@@ -1,0 +1,21 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwqwdhk12314" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="page-content">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="{{ url_for('admin.index') }}">Home</a>
+            </li>
+            <li class="active">Dashboard</li>
+        </ul>
+    </div>
+    <div class="page-body">
+    </div>
+</div>
+{% endblock %}

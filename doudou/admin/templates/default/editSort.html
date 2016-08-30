@@ -1,0 +1,134 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwq132213"
+      rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- Page Content -->
+<div class="page-content">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="{{ url_for('admin.index') }}">Home</a>
+            </li>
+            <li class="active">修改分类</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-xs-12" style="left: 18%">
+                <div class="widget">
+                    <div class="widget-header bg-lightred">
+                        <i class="widget-icon fa fa-edit"></i>
+                        <span class="widget-caption">修改分类</span>
+
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                        <!--Widget Buttons-->
+                    </div>
+                    <!--Widget Header-->
+                    <div class="widget-body">
+                        {% if sort %}
+                        <form action="{{ url_for('admin.sort', action='update', sid=sort.sid) }}" method="post"
+                              class="form-horizontal">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <label for='taxis' class="col-sm-2 control-label">序号</label>
+
+                                <div class="col-sm-8">
+                                    {{ form.taxis(class="form-control", value=sort.taxis) }}
+                                    {%- for error in form.taxis.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                    {%- endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for='sortname' class="col-sm-2 control-label"><em
+                                        style="color: red;">*</em>名称</label>
+
+                                <div class="col-sm-8">
+                                    {{ form.sortname(class="form-control", value=sort.sortname) }}
+                                    {%- for error in form.sortname.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                    {%- endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for='alias' class="col-sm-2 control-label"><em style="color: red;">*</em>别名(用于URL的友好显示)</label>
+
+                                <div class="col-sm-8">
+                                    {{ form.alias(class="form-control", value=sort.alias) }}
+                                    {%- for error in form.alias.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                    {%- endfor %}
+                                </div>
+                            </div>
+                            {%- if sort.childrens == [] -%}
+                            <div class="form-group">
+                                <label for='pid' class="col-sm-2 control-label">父类</label>
+
+                                <div class="col-sm-8">
+                                    <select id="pid" name="pid" class="form-control">
+                                        <option value="0"
+                                        {% if sort.pid == 0 %} selected="selected" {% endif %}>无</option>
+                                        {%- if p_sorts -%}
+                                        {%- for p_sort in p_sorts %}
+                                        {%- if p_sort.sid != sort.sid -%}
+                                        <option value="{{ p_sort.sid }}"
+                                        {% if p_sort.sid == sort.pid %} selected="selected" {% endif %}>{{
+                                        p_sort.sortname }}</option>
+                                        {% endif %}
+                                        {%- endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label for='description' class="col-sm-2 control-label">分类描述</label>
+
+                                <div class="col-sm-8">
+                                    {{ form.description(class="form-control", rows="3") }}
+                                    {%- for error in form.description.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                    {%- endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+
+                                <div class="col-sm-8">
+                                    <input type="submit" value="修改分类" class="btn btn-primary btn-block"/>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <!--Widget Body-->
+                </div>
+                <!--Widget-->
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+<!-- /Page Content -->
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('admin.static', filename='default/js/bootbox/bootbox.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dashboard").removeClass("active");
+        $("#sort").addClass("active")
+    });
+</script>
+{% endblock %}

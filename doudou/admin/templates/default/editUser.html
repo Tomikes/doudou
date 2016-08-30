@@ -1,0 +1,118 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+    <link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwq132213"
+          rel="stylesheet"/>
+    <link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="page-content">
+        <!-- Page Breadcrumb -->
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="{{ url_for('admin.index') }}">Home</a>
+                </li>
+                <li class="active">修改用户</li>
+            </ul>
+        </div>
+        <!-- /Page Breadcrumb -->
+        <!-- Page Body -->
+        <div class="page-body">
+            <div class="row">
+                <div class="col-lg-8 col-sm-8 col-xs-12" style="left: 18%">
+                    <div class="widget">
+                        <div class="widget-header bg-lightred">
+                            <i class="widget-icon fa fa-plus"></i>
+                            <span class="widget-caption">修改用户</span>
+
+                            <div class="widget-buttons">
+                                <a href="#" data-toggle="maximize">
+                                    <i class="fa fa-expand"></i>
+                                </a>
+                            </div>
+                            <!--Widget Buttons-->
+                        </div>
+                        <!--Widget Header-->
+                        <div class="widget-body">
+                            <form action="{{ url_for('admin.user', action='update', uid=us.uid) }}" method="post"
+                                  class="form-horizontal">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                    <label for='username' class="col-sm-2 control-label"><em style="color: red;">*</em>&nbsp;用户名</label>
+
+                                    <div class="col-sm-8">
+                                        {{ form.username(class="form-control", value=us.username) }}
+                                        {% for error in form.username.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for='password' class="col-sm-2 control-label"><em style="color: red;">*</em>&nbsp;密码:</label>
+
+                                    <div class="col-sm-8">
+                                        {{ form.password(class="form-control") }}
+                                        {% for error in form.password.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for='role' class="col-sm-2 control-label"><em style="color: red;">*</em>&nbsp;权限</label>
+
+                                    <div class="col-sm-8">
+                                        <select id="role" name="role" class="form-control">
+                                            <option value="1" {% if us.role == "1" %}selected="selected" {% endif %}>
+                                                普通用户
+                                            </option>
+                                            <option value="0" {% if us.role == "0" %}selected="selected" {% endif %}>
+                                                管理员
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for='ischeck' class="col-sm-2 control-label">是否允许登陆</label>
+
+                                    <div class="col-sm-8">
+                                        <select id="ischeck" name="ischeck" class="form-control">
+                                            <option value="y" {% if us.ischeck == "y" %}selected="selected" {% endif %}>
+                                                允许登陆
+                                            </option>
+                                            <option value="n" {% if us.ischeck == "n" %}selected="selected" {% endif %}>
+                                                禁止登陆
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+
+                                    <div class="col-sm-8">
+                                        <input type="submit" value="提交修改" class="btn btn-primary btn-block"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--Widget Body-->
+                    </div>
+                    <!--Widget-->
+                </div>
+            </div>
+        </div>
+        <!-- /Page Body -->
+    </div>
+    <!-- /Page Content -->
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('admin.static', filename='default/js/bootbox/bootbox.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dashboard").removeClass("active");
+            $("#user").addClass("active")
+        });
+    </script>
+{% endblock %}

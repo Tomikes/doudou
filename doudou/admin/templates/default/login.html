@@ -1,0 +1,86 @@
+{% extends "default/_base.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=789217893hjkq" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block main %}
+<div class="login-container animated fadeInDown">
+    <form action="{{ url_for('admin.login') }}" method="post">
+        {{ form.hidden_tag() }}
+        <div class="loginbox bg-white">
+            <div class="loginbox-title">SIGN IN</div>
+            <div class="loginbox-social">
+                <div class="social-title">Connect with Your Accounts</div>
+            </div>
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+                <div class="or">Enter</div>
+            </div>
+            <div class="loginbox-textbox">
+                {{ form.username(class="form-control", placeholder="Username/Email") }}
+                {% for error in form.username.errors %}
+                    <div style="display: none">
+                        <p id="usr_err_msg">{{ error }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="loginbox-textbox">
+                {{ form.password(class="form-control", placeholder="Password") }}
+                {% for error in form.password.errors %}
+                    <div style="display: none">
+                        <p id="pwd_err_msg">{{ error }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="loginbox-textbox">
+                {{ form.authcode(class="form-control", placeholder="验证码", style="width: 50%") }}
+                <img id="auth-img" src="{{ url_for('apps.create_auth_code') }}" class="auth_img tooltip-danger"
+                     style="width: 130px;"
+                     data-toggle="tooltip" data-placement="bottom" data-original-title="看不清楚?点击图片试试">
+                {% for error in form.authcode.errors %}
+                    <div style="display: none">
+                        <p id="acd_err_msg">{{ error }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="checkbox">
+                <label style="padding-left: 40px;">
+                    {{ form.remember_me() }}
+                    <span class="text">记住我</span>
+                </label>
+            </div>
+            <div class="loginbox-submit">
+                <input type="submit" class="btn btn-primary btn-block" value="Login">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('admin.static', filename='default/js/toastr/toastr.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#auth-img").click(function () {
+                this.src = '{{ url_for("apps.create_auth_code") }}?ver=' + Math.random();
+            });
+
+            var pwd_err_msg = $("#pwd_err_msg").html();
+            if (pwd_err_msg != null){
+                Notify(pwd_err_msg, 'top-right', '5000', 'danger', 'fa-bolt', true);
+            }
+
+            //
+            var usr_err_msg = $("#usr_err_msg").html();
+            if (usr_err_msg != null){
+                Notify(usr_err_msg, 'top-right', '5000', 'danger', 'fa-bolt', true);
+            }
+            //
+            var acd_err_msg = $("#acd_err_msg").html();
+            if (acd_err_msg != null){
+                Notify(acd_err_msg, 'top-right', '5000', 'danger', 'fa-bolt', true);
+            }
+            return false;
+        });
+    </script>
+{% endblock %}

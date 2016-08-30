@@ -1,0 +1,291 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=s2e2131241"
+      rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="page-content">
+<div class="page-breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="{{ url_for('admin.index') }}">Home</a>
+        </li>
+        <li class="active">个人中心</li>
+    </ul>
+</div>
+<div class="page-body">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == "success" %}
+<div class="alert alert-success fade in">
+    <button class="close" data-dismiss="alert">
+        ×
+    </button>
+    <i class="fa-fw fa fa-check"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% elif category == "error" %}
+<div class="alert alert-danger fade in">
+    <button class="close" data-dismiss="alert">
+        ×
+    </button>
+    <i class="fa-fw fa fa-times"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="profile-container">
+            <div class="profile-header row">
+                <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                    <img src="{{ url_for('admin.static', filename=avatar_path) }}"
+                         alt=""
+                         class="header-avatar"/>
+                </div>
+                <div class="col-lg-5 col-md-8 col-sm-12 profile-info">
+                    <div class="header-fullname">{% if g.user.nickname %}{{ g.user.nickname }}{% else %}
+                        {{ g.user.username }}{% endif %}
+                    </div>
+                    <label class="btn btn-danger btn-sm  btn-follow">
+                        {% if g.user.role == '0' %}管理员{% else %}普通用户{% endif %}
+                    </label>
+
+                    <div class="header-information">
+                        {% if g.user.description %}{{ g.user.description }}{% else %}暂无个人描述{% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 profile-stats">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 stats-col">
+                            <div class="stats-value pink">284</div>
+                            <div class="stats-title">文章</div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 stats-col">
+                            <div class="stats-value pink">803</div>
+                            <div class="stats-title">评论</div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 stats-col">
+                            <div class="stats-value pink">1207</div>
+                            <div class="stats-title">POSTS</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 inlinestats-col">
+                            <i class="glyphicon glyphicon-envelope"
+                               style="font-size: 20px;"></i> {{ g.user.email }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="col-lg-12">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+                            <li class="active">
+                                <a data-toggle="tab" href="#overview">
+                                    <strong>个人信息</strong>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content tabs-flat">
+                            <div id="overview" class="tab-pane active">
+                                <div class="row profile-overview">
+                                    <div class="col-md-12">
+                                        <h6 class="row-title before-themeprimary no-margin-top">个人资料</h6>
+                                        <button id="userInfoEdit"
+                                                class="row-title before-themeprimary btn btn-danger no-margin-top"
+                                                style="float: right;">编辑</button>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="profile-contacts" id="userInfo">
+
+                                                    <div class="profile-badge orange"><i
+                                                            class="fa fa-user orange"></i><span>基本信息</span>
+                                                    </div>
+                                                    <div class="contact-info">
+                                                        <p>
+                                                            用户名 : {{ g.user.username }} <br>
+                                                            昵 称 : {{ g.user.nickname }} <br>
+                                                            Email : {{ g.user.email }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="profile-badge azure">
+                                                        <i class="fa fa-quote-left azure"></i><span>个人描述</span>
+                                                    </div>
+                                                    <div class="contact-info">
+                                                        <p>
+                                                            {{ g.user.description }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-contacts" id="userForm"
+                                                     style="display: none;">
+
+                                                    <div class="profile-badge orange"><i
+                                                            class="fa fa-user orange"></i><span>基本信息</span>
+                                                    </div>
+                                                    <form action="{{ url_for('admin.profile', action=" update
+                                                    ") }}"
+                                                    method="post" class="form-horizontal">
+                                                    {{ form.hidden_tag() }}
+                                                    <div class="contact-info">
+                                                        <div class="form-group">
+                                                            <label for='username'
+                                                                   class="col-sm-2 control-label">用户名</label>
+
+                                                            <div class="col-sm-8">
+                                                                {{ form.username(class="form-control",
+                                                                value=g.user.username) }}
+                                                                {% for error in form.username.errors %}
+                                                                <span class="text-danger">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for='password'
+                                                                   class="col-sm-2 control-label">密&nbsp;&nbsp;码</label>
+
+                                                            <div class="col-sm-8">
+                                                                {{ form.password(class="form-control") }}
+                                                                {% for error in form.password.errors %}
+                                                                <span class="text-danger">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for='nickname'
+                                                                   class="col-sm-2 control-label">昵&nbsp;&nbsp;称</label>
+
+                                                            <div class="col-sm-8">
+                                                                {{ form.nickname(class="form-control",
+                                                                value=g.user.nickname) }}
+                                                                {% for error in form.nickname.errors %}
+                                                                <span class="text-danger">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for='email'
+                                                                   class="col-sm-2 control-label">Email</label>
+
+                                                            <div class="col-sm-8">
+                                                                {{ form.email(class="form-control",
+                                                                value=g.user.email) }}
+                                                                {% for error in form.email.errors %}
+                                                                <span class="text-danger">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-badge azure">
+                                                        <i class="fa fa-quote-left azure"></i><span>个人描述</span>
+                                                    </div>
+                                                    <div class="contact-info">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-2"></div>
+                                                            <div class="col-sm-8">
+                                                                {{ form.description(class="form-control",
+                                                                rows="4") }}
+                                                                {% for error in form.description.errors %}
+                                                                <span class="text-danger">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success"
+                                                            style="left: 30%;">保存
+                                                    </button>
+                                                    <button type="reset" class="btn btn-darkorange"
+                                                            style="left: 40%;">重置
+                                                    </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div id="contact-map" class="animated flipInY">
+                                                    <img src="{{ url_for('admin.static', filename=avatar_path) }}"
+                                                         style="width: 400px;height: 400px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h6 class="row-title before-orange">最新文章</h6>
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-sm-6 col-xs-12">
+                                            </div>
+                                            <div class="col-lg-4 col-sm-6 col-xs-12">
+                                            </div>
+                                            <div class="col-lg-4 col-sm-6 col-xs-12">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myLargeModalLabel">更换头像</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="altContent"></div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="http://open.web.meitu.com/sources/xiuxiu.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#userInfoEdit").on('click', function () {
+            $("#userInfo").toggle();
+            $("#userForm").toggle();
+            var buttonText = $("#userInfoEdit").text();
+            if (buttonText == "编辑") {
+                $("#userInfoEdit").text('取消编辑');
+            } else {
+                $("#userInfoEdit").text('编辑');
+            }
+        });
+
+        var a_url = 'http://202.75.219.114:8047' + '{{ url_for("admin.avatar_upload") }}';
+        $("#contact-map").on('click', function () {
+            /*第1个参数是加载编辑器div容器，第2个参数是编辑器类型，第3个参数是div容器宽，第4个参数是div容器高*/
+			xiuxiu.embedSWF("altContent", 5, "100%", "600px");
+            //修改为您自己的图片上传接口
+		    xiuxiu.setUploadURL(a_url);
+            xiuxiu.setUploadType(2);
+            xiuxiu.setUploadDataFieldName("avatar");
+            $(".bs-example-modal-lg").modal('show');
+            xiuxiu.onUploadResponse = function(data) {
+                if (data == 'success'){
+                    $(".bs-example-modal-lg").modal('hide');
+                    window.location.reload();
+                }else if(data == 'error'){
+                    alert("上传头像错误");
+                }
+			};
+        });
+    });
+</script>
+{% endblock %}

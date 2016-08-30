@@ -1,0 +1,126 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+    <link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwq132213"
+          rel="stylesheet"/>
+    <link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="page-content">
+        <!-- Page Breadcrumb -->
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="{{ url_for('admin.index') }}">Home</a>
+                </li>
+                <li class="active">链接</li>
+            </ul>
+        </div>
+        <!-- /Page Breadcrumb -->
+        <!-- Page Body -->
+        <div class="page-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == "success" %}
+                            <div class="alert alert-success fade in">
+                                <button class="close" data-dismiss="alert">
+                                    ×
+                                </button>
+                                <i class="fa-fw fa fa-check"></i>
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% elif category == "error" %}
+                            <div class="alert alert-danger fade in">
+                                <button class="close" data-dismiss="alert">
+                                    ×
+                                </button>
+                                <i class="fa-fw fa fa-times"></i>
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="well with-header with-footer">
+                        <div class="header bg-blueberry">
+                            用户管理
+                            <a href="{{ url_for('admin.user', action='add') }}"><span style="float: right"
+                                                                                      class="label label-darkorange"><i
+                                    class="fa fa-plus"></i>添加用户</span></a>
+                        </div>
+                        <table class="table">
+                            <thead class="bordered-blue">
+                            <tr>
+                                <th>序号</th>
+                                <th>用户名</th>
+                                <th>昵称</th>
+                                <th>权限</th>
+                                <th>是否允许登陆</th>
+                                <th>邮箱</th>
+                                <th>描述</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {%- if users -%}
+                                {%- for user in users %}
+                                    <tr>
+                                        <th scope="row">{{ user.uid }}</th>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.nickname }}</td>
+                                        <td>{%- if user.role == '1' -%}普通用户{%- elif user.role == '0' -%}
+                                            管理员{% endif %}</td>
+                                        <td>{%- if user.ischeck == 'y' -%}允许登陆{%- elif user.ischeck == 'n' -%}
+                                            禁止登陆{% endif %}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.description }}</td>
+                                        <td>
+                                            <a href="{{ url_for('admin.user', action='update', uid=user.uid) }}">编辑</a>
+                                            <a href="javascript: em_confirm({{ user.uid }});">删除</a>
+                                        </td>
+                                    </tr>
+                                {%- endfor %}
+                            {%- else -%}
+                                <tr>
+                                    <td>暂无用户</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+
+                        <div class="footer">
+                            @用户信息
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Body -->
+    </div>
+    <!-- /Page Content -->
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('admin.static', filename='default/js/bootbox/bootbox.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dashboard").removeClass("active");
+            $("#user").addClass("active")
+        });
+    </script>
+    <script type="text/javascript">
+        function em_confirm(uid) {
+            var DeleteURL = '{{ url_for("admin.user", action="del") }}' + "&uid=" + uid;
+            var msg = "你确定要删除该用户吗?";
+            if (confirm(msg)) {
+                window.location = DeleteURL;
+            } else {
+                return;
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "default/_base.html" %}
+{% block main %}
+<!-- Loading Container -->
+<div class="loading-container">
+    <div class="loading-progress">
+        <div class="rotator">
+            <div class="rotator">
+                <div class="rotator colored">
+                    <div class="rotator">
+                        <div class="rotator colored">
+                            <div class="rotator colored"></div>
+                            <div class="rotator"></div>
+                        </div>
+                        <div class="rotator colored"></div>
+                    </div>
+                    <div class="rotator"></div>
+                </div>
+                <div class="rotator"></div>
+            </div>
+            <div class="rotator"></div>
+        </div>
+        <div class="rotator"></div>
+    </div>
+</div>
+<!--  /Loading Container -->
+<!-- Navbar -->
+<div class="navbar">
+<div class="navbar-inner">
+<div class="navbar-container">
+<!-- Navbar Barnd -->
+<div class="navbar-header pull-left">
+    <a href="{{ url_for('admin.index') }}" class="navbar-brand">
+        <small>
+            <img src="{{ url_for('admin.static', filename='default/img/logo.png') }}" alt=""/>
+        </small>
+    </a>
+</div>
+<!-- /Navbar Barnd -->
+
+<!-- Sidebar Collapse -->
+<div class="sidebar-collapse active" id="sidebar-collapse">
+    <i class="collapse-icon fa fa-bars"></i>
+</div>
+<!-- /Sidebar Collapse -->
+<!-- Account Area and Settings --->
+<div class="navbar-header pull-right">
+<div class="navbar-account">
+<ul class="account-area">
+<li>
+    <a class="login-area dropdown-toggle" data-toggle="dropdown">
+        <div class="avatar" title="View your public profile">
+            <img src="{{ url_for('admin.static', filename='avatar') }}/{{ g.user.photo }}" style="border-radius: 15px;">
+        </div>
+        <section>
+            <h2><span class="profile"><span>{{ g.user.username }}</span></span></h2>
+        </section>
+    </a>
+    <!--Login Area Dropdown-->
+    <ul class="dropdown-menu">
+        <li style="padding-left: 25%;">
+            <a href="{{ url_for('admin.profile') }}">个人中心</a>
+        </li>
+        <li style="padding-left: 25%;">
+            <a href="{{ url_for('admin.logout') }}">注销登陆</a>
+        </li>
+    </ul>
+    <!--/Login Area Dropdown-->
+</li>
+<!-- /Account Area -->
+<!--Note: notice that setting div must start right after account area list.
+no space must be between these elements-->
+<!-- Settings -->
+</ul>
+<div class="setting">
+    <a id="btn-setting" title="Setting" href="#">
+        <i class="icon glyphicon glyphicon-cog"></i>
+    </a>
+</div>
+<div class="setting-container">
+    <label>
+        <input type="checkbox" checked="checked" id="checkbox_fixednavbar">
+        <span class="text">固定导航栏</span>
+    </label>
+    <label>
+        <input type="checkbox" checked="checked" id="checkbox_fixedsidebar">
+        <span class="text">固定侧边栏</span>
+    </label>
+    <label>
+        <input type="checkbox" checked="checked" id="checkbox_fixedbreadcrumbs">
+        <span class="text">固定面包屑</span>
+    </label>
+</div>
+<!-- Settings -->
+</div>
+</div>
+<!-- /Account Area and Settings -->
+</div>
+</div>
+</div>
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+<!-- Page Container -->
+<div class="page-container">
+<!-- Page Sidebar -->
+<div class="page-sidebar menu-compact" id="sidebar">
+<!-- Page Sidebar Header-->
+<div class="sidebar-header-wrapper">
+    <input type="text" class="searchinput"/>
+    <i class="searchicon fa fa-search"></i>
+
+    <div class="searchhelper">Search Reports, Charts, Emails or Notifications</div>
+</div>
+<!-- /Page Sidebar Header -->
+<!-- Sidebar Menu -->
+<ul class="nav sidebar-menu">
+<!--Dashboard-->
+<li class="active" id="dashboard">
+    <a href="{{ url_for('admin.index') }}">
+        <i class="menu-icon glyphicon glyphicon-home"></i>
+        <span class="menu-text"> Dashboard </span>
+    </a>
+</li>
+<!-- addBlog -->
+<li id="add-blog">
+    <a href="{{ url_for('admin.admin_blog') }}">
+        <i class="menu-icon fa fa-pencil"></i>
+        <span class="menu-text"> 写文章 </span>
+    </a>
+</li>
+<!-- Sort -->
+<li id="sort">
+    <a href="{{ url_for('admin.sort') }}">
+        <i class="menu-icon fa fa-tags"></i>
+        <span class="menu-text"> 分类 </span>
+    </a>
+</li>
+<!-- Link -->
+<li id="link">
+    <a href="{{ url_for('admin.link') }}">
+        <i class="menu-icon fa fa-link"></i>
+        <span class="menu-text"> 链接 </span>
+    </a>
+</li>
+<!-- User -->
+<li id="user">
+    <a href="{{ url_for('admin.user') }}">
+        <i class="menu-icon fa fa-user"></i>
+        <span class="menu-text"> 用户 </span>
+    </a>
+</li>
+</ul>
+<!-- /Sidebar Menu -->
+</div>
+<!-- /Page Sidebar -->
+<!-- Page Content -->
+{% block content %}{% endblock %}
+<!-- /Page Content -->
+</div>
+<!-- /Page Container -->
+<!-- Main Container -->
+{% block specialPage %}{% endblock %}
+{% endblock %}

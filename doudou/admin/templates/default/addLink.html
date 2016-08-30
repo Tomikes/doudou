@@ -1,0 +1,113 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwq132213"
+      rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- Page Content -->
+<div class="page-content">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="{{ url_for('admin.index') }}">Home</a>
+            </li>
+            <li class="active">添加链接</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-xs-12" style="left: 18%">
+                <div class="widget">
+                    <div class="widget-header bg-lightred">
+                        <i class="widget-icon fa fa-plus"></i>
+                        <span class="widget-caption">添加链接</span>
+
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                        <!--Widget Buttons-->
+                    </div>
+                    <!--Widget Header-->
+                    <div class="widget-body">
+                        <form action="{{ url_for('admin.link', action='add') }}" method="post" class="form-horizontal">
+                        {{ form.hidden_tag() }}
+						<div class="form-group">
+							<label for='taxis' class="col-sm-2 control-label">序号</label>
+							<div class="col-sm-8">
+                                {{ form.taxis(class="form-control") }}
+                                {% for error in form.taxis.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label for='sitename' class="col-sm-2 control-label"><em style="color: red;">*</em>友链名称</label>
+							<div class="col-sm-8">
+                                {{ form.sitename(class="form-control") }}
+                                {% for error in form.sitename.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label for='siteurl' class="col-sm-2 control-label"><em style="color: red;">*</em>链接地址</label>
+							<div class="col-sm-8">
+                                {{ form.siteurl(class="form-control") }}
+                                {% for error in form.siteurl.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+							</div>
+						</div>
+                        <div class="form-group">
+							<label for='hide' class="col-sm-2 control-label">是否显示</label>
+							<div class="col-sm-8">
+                                <select id="hide" name="hide" class="form-control">
+                                    <option value="y">显示</option>
+                                    <option value="n">隐藏</option>
+                                </select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for='description' class="col-sm-2 control-label">链接描述</label>
+							<div class="col-sm-8">
+                                {{ form.description(class="form-control", rows="3") }}
+                                {% for error in form.description.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"></label>
+							<div class="col-sm-8">
+								<input type="submit" value="增加链接" class="btn btn-primary btn-block" />
+							</div>
+						</div>
+					</form>
+                    </div>
+                    <!--Widget Body-->
+                </div>
+                <!--Widget-->
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+<!-- /Page Content -->
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('admin.static', filename='default/js/bootbox/bootbox.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dashboard").removeClass("active");
+        $("#link").addClass("active")
+    });
+</script>
+{% endblock %}

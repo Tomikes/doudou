@@ -1,0 +1,153 @@
+{% extends "default/_MainBase.html" %}
+{% block style %}
+<link href="{{ url_for('admin.static',filename='default/css/beyond.min.css') }}?time=dwq132213"
+      rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/demo.min.css') }}" rel="stylesheet"/>
+<link href="{{ url_for('admin.static',filename='default/css/animate.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- Page Content -->
+<div class="page-content">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="{{ url_for('admin.index') }}">Home</a>
+            </li>
+            <li class="active">分类</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Body -->
+    <div class="page-body">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        {% if category == "success" %}
+        <div class="alert alert-success fade in">
+            <button class="close" data-dismiss="alert">
+                ×
+            </button>
+            <i class="fa-fw fa fa-check"></i>
+            <strong>{{ message }}</strong>
+        </div>
+        {% elif category == "error" %}
+        <div class="alert alert-danger fade in">
+            <button class="close" data-dismiss="alert">
+                ×
+            </button>
+            <i class="fa-fw fa fa-times"></i>
+            <strong>{{ message }}</strong>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="well with-header with-footer">
+                    <div class="header bg-blueberry">
+                        分类管理
+                        <a href="{{ url_for('admin.sort', action='add') }}"><span style="float: right"
+                                                                                  class="label label-darkorange"><i
+                                class="fa fa-plus"></i>添加分类</span></a>
+                    </div>
+                    <table class="table">
+                        <thead class="bordered-blue">
+                        <tr>
+                            <th>
+                                序号
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                描述
+                            </th>
+                            <th>
+                                别名
+                            </th>
+                            <th>
+                                查看
+                            </th>
+                            <th>
+                                文章
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {%- if sorts -%}
+                        {%- for sort in sorts %}
+                        <tr>
+                            <th scope="row">{{ sort.taxis }}</th>
+                            <td>{{ sort.sortname }}</td>
+                            <td>{{ sort.description }}</td>
+                            <td>{{ sort.alias }}</td>
+                            <td><a href="{{ url_for('apps.index') }}"><i class="fa fa-desktop"></i></a></td>
+                            <td></td>
+                            <td>
+                                <a href="{{ url_for('admin.sort', action='update', sid=sort.sid) }}">编辑</a>
+                                <a href="javascript: em_confirm({{ sort.sid }});">删除</a>
+                            </td>
+                        </tr>
+                        {%- if sort.childrens -%}
+                        {%- for child in sort.childrens %}
+                        <tr>
+                            <th scope="row">{{ child.taxis }}</th>
+                            <td style="padding-left: 30px;">--- {{ child.sortname }}</td>
+                            <td>{{ child.description }}</td>
+                            <td>{{ child.alias }}</td>
+                            <td><a href="{{ url_for('apps.index') }}"><i class="fa fa-desktop"></i></a>
+                            </td>
+                            <td></td>
+                            <td>
+                                <a href="{{ url_for('admin.sort', action='update', sid=child.sid) }}">编辑</a>
+                                <a href="javascript: em_confirm({{ child.sid }});">删除</a>
+                            </td>
+                        </tr>
+                        {%- endfor %}
+                        {% endif %}
+                        {%- endfor %}
+                        {%- else -%}
+                        <tr>
+                            <td>暂无分类</td>
+                        </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                    <div class="footer">
+                        @分类信息
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+<!-- /Page Content -->
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('admin.static', filename='default/js/bootbox/bootbox.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dashboard").removeClass("active");
+        $("#sort").addClass("active")
+    });
+</script>
+<script type="text/javascript">
+    function em_confirm(sid) {
+        var DeleteURL = '{{ url_for("admin.sort", action="del") }}' + "&sid=" + sid;
+        var msg = "你确定要删除该分类吗?";
+        if (confirm(msg)) {
+            window.location = DeleteURL;
+        } else {
+            return;
+        }
+    }
+</script>
+{% endblock %}
